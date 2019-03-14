@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.coupon.dao.LianmengInfoDao">
+	
+	<resultMap type="com.market.coupon.model.LianmengInfo" id="LianmengInfoMap">
+		<result column="lianmeng_id" property="lianmengId"/>
+		<result column="lianmeng_name" property="lianmengName"/>
+		<result column="lianmeng_start_time" property="stime"/>
+		<result column="lianmeng_end_time" property="etime"/>
+		<result column="lianmeng_price" property="price"/>
+		<result column="lianmeng_fee" property="fee"/>
+		<result column="lianmeng_one_min" property="oneMin"/>
+		<result column="lianmeng_one_max" property="oneMax"/>
+		<result column="lianmeng_two_min" property="twoMin"/>
+		<result column="lianmeng_two_max" property="twoMax"/>
+		<result column="if_pay" property="ifPay"/>
+	
+	</resultMap>
+
+
+	<select id="selectById"
+		parameterType="java.lang.Integer" resultMap="LianmengInfoMap">
+		select * from lianmeng_info
+		where lianmeng_id=#{id}
+	</select>
+
+</mapper>

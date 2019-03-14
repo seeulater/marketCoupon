@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.coupon.dao.OrderDao">
+
+
+
+	<insert id="add" parameterType="com.market.coupon.model.Order">
+		insert into
+		order(order_time,order_buyer_name,order_buyer_phone,order_lianmeng_id,order_buyer_openid,order_shopid,order_price)
+		values(#{orderTime},#{orderBuyerName},#{orderBuyerPhone},#{orderLianmengId},#{orderBuyerOpenid},#{orderShopid},#{orderPrice})
+
+	</insert>
+
+</mapper>
