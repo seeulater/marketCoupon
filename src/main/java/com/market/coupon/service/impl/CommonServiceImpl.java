@@ -86,9 +86,7 @@ public class CommonServiceImpl implements CommonService{
 
 	@Override
 	public void updateUserInfo(String openId,int lianmengId) {
-
 		weUserDao.update(openId,lianmengId);
-		
 	}
 
 

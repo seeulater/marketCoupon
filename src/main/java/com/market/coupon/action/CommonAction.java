@@ -14,6 +14,7 @@ import com.market.coupon.reqschema.AddJoinInfoSchema;
 import com.market.coupon.reqschema.AddUserSchema;
 import com.market.coupon.reqschema.OrderCallbackSchema;
 import com.market.coupon.reqschema.OrderSchema;
+import com.market.coupon.reqschema.RedPackageSchema;
 import com.market.coupon.reqschema.UpdateUserInfoSchema;
 import com.market.coupon.service.CommonService;
 
@@ -86,6 +87,15 @@ public class CommonAction {
 		commonService.updateUserInfo(openId,lianmengId);
 		return true;
 	}
+	
+	//接口编号11,根据openid和lianmengid获取红包信息
+	@RequestMapping("/redPackage")
+	void redPackage(@RequestBody RedPackageSchema schema) {
+	    
+	    
+	}
+	
+	
 	
 
 }
