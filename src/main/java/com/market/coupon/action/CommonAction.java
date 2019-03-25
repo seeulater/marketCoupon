@@ -16,6 +16,7 @@ import com.market.coupon.reqschema.OrderCallbackSchema;
 import com.market.coupon.reqschema.OrderSchema;
 import com.market.coupon.reqschema.RedPackageSchema;
 import com.market.coupon.reqschema.UpdateUserInfoSchema;
+import com.market.coupon.responseSchema.RedPackageResponse;
 import com.market.coupon.service.CommonService;
 
 @RestController
@@ -84,18 +85,18 @@ public class CommonAction {
 	Boolean updateUserInfo(@RequestBody UpdateUserInfoSchema schema) {
 		String openId = schema.getOrder_buyer_openid();
 		int lianmengId = schema.getOrder_buyer_lianmengid();
-		commonService.updateUserInfo(openId,lianmengId);
+		commonService.updateUserInfo(openId, lianmengId);
 		return true;
 	}
-	
-	//接口编号11,根据openid和lianmengid获取红包信息
+
+	// 接口编号11,根据openid和lianmengid获取红包信息
 	@RequestMapping("/redPackage")
-	void redPackage(@RequestBody RedPackageSchema schema) {
-	    
-	    
+	RedPackageResponse redPackage(@RequestBody RedPackageSchema schema) {
+		String openId = schema.getBuyer_openid();
+		int lianmengId = schema.getLianmeng_id();
+		RedPackageResponse response = commonService.redPackage(openId, lianmengId);
+
+		return response;
 	}
-	
-	
-	
 
 }

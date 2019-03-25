@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import com.market.coupon.model.JoinInfo;
 import com.market.coupon.model.LianmengInfo;
 import com.market.coupon.model.Order;
 import com.market.coupon.model.WeUserinfo;
+import com.market.coupon.responseSchema.RedPackageResponse;
 import com.market.coupon.service.CommonService;
 
 @Service("CommonService")
@@ -87,6 +89,28 @@ public class CommonServiceImpl implements CommonService{
 	@Override
 	public void updateUserInfo(String openId,int lianmengId) {
 		weUserDao.update(openId,lianmengId);
+	}
+
+	@Override
+	public RedPackageResponse redPackage(String openId, int lianmengId) {
+		RedPackageResponse response = new RedPackageResponse();
+		//frontId
+		WeUserinfo weUserinfo = weUserDao.selectByOpenId(openId);
+		response.setFront_one_openid(weUserinfo.getFrontOneOpenid());
+		response.setFront_two_openid(weUserinfo.getFrontTwoOpenid());
+		//计算随机数
+		LianmengInfo lianmengInfo = lianmengInfoDao.selectById(lianmengId);
+	    int oneMin = lianmengInfo.getOneMin();
+	    int oneMax = lianmengInfo.getOneMax();
+	    int random_num_one = RandomUtils.nextInt(oneMin,oneMax);
+	    response.setRandom_num_one(random_num_one);
+	    
+	    int twoMin = lianmengInfo.getTwoMin();
+	    int twoMax = lianmengInfo.getTwoMax();
+	    int random_num_two = RandomUtils.nextInt(twoMin,twoMax);
+	    response.setRandom_num_two(random_num_two);
+		
+		return response;
 	}
 
 
