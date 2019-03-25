@@ -10,6 +10,10 @@ public interface CommonService {
 	
 	void addJoinInfo(JoinInfo info);
 	
-	void makeOrder(Order order);
+	int makeOrder(Order order);
+	
+	void orderCallback(String orderId);
+	
+	void updateUserInfo(String openId,int lianmengId);
 
 }

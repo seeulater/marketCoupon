@@ -3,5 +3,9 @@ package com.market.coupon.dao;
 import com.market.coupon.model.Order;
 
 public interface OrderDao {
-    void add(Order order);
+    int add(Order order);
+    
+    void update(Order order);
+    
+    Order get(String openId);
 }

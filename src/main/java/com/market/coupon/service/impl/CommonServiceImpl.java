@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,26 +41,57 @@ public class CommonServiceImpl implements CommonService{
 	public void addJoinInfo(JoinInfo info) {
 	    joinInfoDao.add(info);
 	}
+	
+	@Override
+	public void orderCallback(String orderId) {
+		//需要更新order表的order_pay_state、order_serial、order_time字段
+		Date orderTime = new Date();
+		FastDateFormat fdf = FastDateFormat.getInstance("yyyyMMdd");
+		String customDateTime = fdf.format(orderTime);
+		
+		//下单时间（yyyymmdd）+自增序列号（6位）+ 6位随机数
+		String random = RandomStringUtils.random(12, false, true);
+		String orderSerial = customDateTime + random;
+		
+		Order order = new Order();
+		order.setOrderPayState("payok");
+		order.setOrderTime(orderTime);
+		order.setOrderSerial(orderSerial);
+		orderDao.update(order);
+		
+	}
 
 	
     @Override
     @Transactional
-    public void makeOrder(Order order) {
+    public int makeOrder(Order order) {
         //查询shopid
         String openid = order.getOrderBuyerOpenid();
         WeUserinfo weUserinfo = weUserDao.selectByOpenId(openid);
+        //根据openId从we_userinfo查到lianmengid
         //查price
-        int lianmengid = order.getOrderLianmengId();
+        int lianmengid = weUserinfo.getLianmengid();
         LianmengInfo lianmengInfo = lianmengInfoDao.selectById(lianmengid);
+        
+        order.setOrderLianmengId(lianmengid);
         
         order.setOrderShopid(weUserinfo.getShopid());
         order.setOrderPrice(lianmengInfo.getPrice());
-        
+        order.setOrderPayState("weizhifu");
         order.setOrderTime(new Date());
-        orderDao.add(order);
+        int id = orderDao.add(order);
+        return id;
         
-        weUserDao.update();
     }
+
+	@Override
+	public void updateUserInfo(String openId,int lianmengId) {
+
+		weUserDao.update(openId,lianmengId);
+		
+	}
+
+
 
 	
 }

@@ -12,6 +12,8 @@ public class Order {
     String orderBuyerOpenid;
     int orderShopid;
     BigDecimal orderPrice;
+    String orderSerial;
+    String orderPayState;
 
     public int getOrderId() {
         return orderId;
@@ -77,12 +79,28 @@ public class Order {
         this.orderPrice = orderPrice;
     }
 
-    @Override
-    public String toString() {
-        return "Order [orderId=" + orderId + ", orderTime=" + orderTime + ", orderBuyerName=" + orderBuyerName
-                + ", orderBuyerPhone=" + orderBuyerPhone + ", orderLianmengId=" + orderLianmengId
-                + ", orderBuyerOpenid=" + orderBuyerOpenid + ", orderShopid=" + orderShopid + ", orderPrice="
-                + orderPrice + "]";
-    }
+	public String getOrderSerial() {
+		return orderSerial;
+	}
+
+	public void setOrderSerial(String orderSerial) {
+		this.orderSerial = orderSerial;
+	}
+
+	public String getOrderPayState() {
+		return orderPayState;
+	}
+
+	public void setOrderPayState(String orderPayState) {
+		this.orderPayState = orderPayState;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", orderTime=" + orderTime + ", orderBuyerName=" + orderBuyerName
+				+ ", orderBuyerPhone=" + orderBuyerPhone + ", orderLianmengId=" + orderLianmengId
+				+ ", orderBuyerOpenid=" + orderBuyerOpenid + ", orderShopid=" + orderShopid + ", orderPrice="
+				+ orderPrice + ", orderSerial=" + orderSerial + ", orderPayState=" + orderPayState + "]";
+	}
 
 }
