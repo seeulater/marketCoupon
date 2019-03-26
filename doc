@@ -1,0 +1,76 @@
+一、接口需要的参数
+1、创建联盟（这里写接口名字）--和其他表无关联（不用改）
+input：join_hangye（行业）
+         join_name（创建联盟的姓名）
+         join_phone（创建联盟的联系电话）
+ Return：
+2、插入用户信息（这里写接口的名字）--用户每次点击链接都会有插入用户信息的操作，如果we_user_info表已有该用户则数据库不执行insert操作。根据openid检查是否已经存在该用户。（先不改，以后再改）
+Input：we_openid（用户微信openid）
+      we_front_one（用户的推荐人的openid，不是必须）
+      we_lianmengid（活动id）
+      we_shopid（所属商家id）
+Return：
+
+3、获取商户推广量，用来统计信息（未做）
+Input：lianmengid（联盟id）
+      
+Return：{code，list{{shop_name, push_count, order_count},...}}  
+push_count从user表查，order_count从order表查
+Code--0：没有该联盟信息；1：有该联盟，list补全
+
+4、插入用户信息2（这里写接口的名字）--用户每次点击链接都会有插入用户信息的操作，通过lianmengid和openid作为主键查询we_user_info表，如果已有该用户记录，则数据库不执行insert操作。（先不用做）
+Input：we_openid（用户微信openid）
+          we_nickname（用户微信名字）
+          we_headpic（用户微信头像）
+      we_front_one（用户的推荐人的openid，不是必须）
+      we_lianmengid（活动id）
+      we_shopid（所属商家id）
+Return：
+
+5、获取订单列表，用来展示到活动首页。（在order表查）（未做）
+Input：lianmengid（联盟id）
+      
+Return：{code，list{{buyer_name, buyer_phone, buyer_nickname, buyer_headpic},...}}
+buyer_name需要隐去中间的字符，格式为崔*江（三字以上）、王**（两字姓名）；buyer_phone需要隐去中间的数字，格式为138***987
+code--0：没有该联盟；1：成功查询到信息，信息补全
+
+6、根据lianmengid和openid查询订单。（未做）
+
+Input：buyer_openid（购买者id）
+lianmeng_id（联盟id）
+      
+Return：{order_serial, buyer_name, buyer_phone, buyer_time}
+buyer_time为字符串，格式为：yyyy-mm-dd  hh：mm：ss。
+如果成功返回{code,order_serial, buyer_name, buyer_phone, buyer_time}
+code--0:该联盟没有该用户；1：返回成功，其他字段填全；2：有该用户但未支付，其他字段填全
+
+7、用户点击提交订单（这里写接口的名字）--用户点击提交订单的操作（不用改）
+Input：order_buyer_name（购买者姓名）
+      order_buyer_phone（购买者电话）
+      order_buyer_openid（购买者微信openid）
+  	  order_buyer_lianmengid（购买者联盟id）
+order_buyer_shop_id（购买者商家id）
+Return：order_id
+
+还需要插入该记录的order_time、order_pay_state、order_price。order_pay_sate为”weizhifu”，price根据联盟id查询。
+
+8、用户付完款之后生成订单的接口。更新order表（未测试，先不改）
+Input：order_id(订单号)
+Return：
+需要更新order表的order_pay_state、order_serial、order_time字段。order_pay_state为”payok”；生成订单序列号order_serial，序列号的计算方法为下单时间（yyyymmdd）+自增序列号（6位）+ 6位随机数。
+
+9、更新we_userinfo表的front_two字段。（修改）
+
+Input：order_buyer_openid（购买者微信openid）
+  	  order_buyer_lianmengid（购买者联盟id）
+Return：{code, openid, lianmeng_id, front_two_id}
+code--0:该联盟没有该用户；1：可以找到front_two,并更新成功，返回值补全；2：该联盟有该用户，但是front_two字段通过计算为空，返回值front_two_id为空，其他补全。
+
+10、根据openid和lianmengid获取红包信息。（未测试，先不用改）
+Input：buyer_openid（购买者微信openid）
+          lianmeng_id
+Return：{front_one_openid, random_num_one, front_two_openid, random_num_two}
+
+还需要返回发红包的信息，json格式：{front_one_openid（一级推广人openid）, random_num_one（一级推广人发放红包数额）, front_two_openid（二级推广人openid）, random_num_two（二级推广人发放红包数额）}，联盟表中front_one_min为一级红包随机数的最小值，front_one_max为一级红包随机数的最大值；联盟表中front_two_min为二级红包随机数的最小值，front_two_max为二级红包随机数的最大值。根据联盟表中红包范围的设置生成两个随机数作为一级、二级奖励红包。
+
+11、插入红包信息（等前端调试）
